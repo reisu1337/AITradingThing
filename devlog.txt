@@ -1,2 +1,0 @@
-30/07/2021 - Created DevLog to keep a track of changes and updates
-22/10/2021 - Created tkinterTest, explored tkinter in more detail ready to build my project
