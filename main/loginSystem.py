@@ -2,6 +2,7 @@ import database
 import bcrypt
 from datetime import datetime
 
+
 def generateUserID():
     now = datetime.now()
     currentTimeHash = bcrypt.hashpw(bytes(str(now), "utf-8"), bcrypt.gensalt())
