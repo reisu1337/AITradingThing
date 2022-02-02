@@ -1,6 +1,7 @@
-import database
+from main import database
 import bcrypt
 from datetime import datetime
+
 
 
 def generateUserID():
@@ -39,6 +40,21 @@ def registerUser(username, password, confPassword):
     con.commit()
 
     return "Success"
+
+
+def loginUser(username, password):
+
+    con, cur = database.connectDataBase()
+
+    checkUserStatement = "SELECT COUNT(*) FROM users WHERE username =?"
+    loginStatement = "SELECT password FROM users WHERE username=?"
+    check = (cur.execute(checkUserStatement, (username,))).fetchone()[0]
+
+    if check >= 1:
+        passwordRetrieved = (cur.execute(loginStatement, (username,))).fetchone()[0]
+        print(passwordRetrieved)
+    else:
+        print("yoinkers")
 
 
 if __name__ == "__main__":
