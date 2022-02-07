@@ -52,10 +52,13 @@ def loginUser(username, password):
 
     if check >= 1:
         passwordRetrieved = (cur.execute(loginStatement, (username,))).fetchone()[0]
-        print(passwordRetrieved)
+        if bcrypt.checkpw(bytes(password, "utf-8"), passwordRetrieved):
+            return "Passwords match"
+        else:
+            return "Passwords do not match"
     else:
-        print("yoinkers")
+        return "Username does not match"
 
 
 if __name__ == "__main__":
-    print(registerUser("Check It", "Honk", "Honk"))
+    print(registerUser("Oliver", "password", "password"))
