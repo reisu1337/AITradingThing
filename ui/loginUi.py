@@ -13,7 +13,7 @@ def register():
     registerWindow.title("Register")
     registerWindow.geometry("350x230")
 
-    regl1 = Label(registerWindow, text="Oliver's Trading Ting", font=30)
+    regl1 = Label(registerWindow, text="Oliver's Trading Thing", font=30)
     regl2 = Label(registerWindow, text="Username:")
     rege1 = Entry(registerWindow, width=30, borderwidth=1)
     regl3 = Label(registerWindow, text="Password:")
@@ -42,7 +42,7 @@ def login():
     loginWindow.geometry("350x200")
     loginWindow.title("Login")
 
-    l1 = Label(loginWindow, text="Oliver's Trading Ting", font=(30))
+    l1 = Label(loginWindow, text="Oliver's Trading Thing", font=(30))
     l2 = Label(loginWindow, text="Username:")
     e1 = Entry(loginWindow, width=30, borderwidth=1)
     l3 = Label(loginWindow, text="Password:")
