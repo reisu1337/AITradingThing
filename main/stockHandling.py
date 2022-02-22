@@ -7,6 +7,7 @@ from datetime import datetime
 today = datetime.today()
 d4 = today.strftime("%b-%d-%Y")
 
+
 def collectData(ticker):
     data = yf.download(tickers=ticker, period="1y", interval="1d", rounding=True, progress=False, show_errors=False)
     if data.empty:
@@ -24,5 +25,15 @@ def retrieveData(ticker):
     return df
 
 
+def clearCache():
+    path = os.fsencode(os.path.dirname(__file__))
+    for file in os.listdir(path):
+        filename = os.fsencode(file)
+        if filename.endswith(bytes(".csv", "utf-8")):
+            if not filename.startswith(bytes(d4, "utf-8")):
+                os.remove(file)
+
+
 if __name__ == "__main__":
     print(retrieveData("GOOGL"))
+    clearCache()
