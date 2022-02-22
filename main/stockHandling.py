@@ -4,10 +4,10 @@ import os
 from os.path import exists
 from datetime import datetime
 
+today = datetime.today()
+d4 = today.strftime("%b-%d-%Y")
 
 def collectData(ticker):
-    today = datetime.today()
-    d4 = today.strftime("%b-%d-%Y")
     data = yf.download(tickers=ticker, period="1y", interval="1d", rounding=True, progress=False, show_errors=False)
     if data.empty:
         return False
@@ -17,8 +17,6 @@ def collectData(ticker):
 
 
 def retrieveData(ticker):
-    today = datetime.today()
-    d4 = today.strftime("%b-%d-%Y")
     if not exists(os.path.dirname(__file__) + "\\" + d4 + ticker + ".csv"):
         if not collectData(ticker):
             return "Stock Not Retrieved"
