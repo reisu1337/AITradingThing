@@ -14,8 +14,9 @@ def tickerUI():
 
     def onClick():
         ticker = e1.get()
-         if sh.retrieveData(ticker):
-
+        if not sh.retrieveData(ticker):
+            label = Label(tickerUIWindow, text="Stock not found")
+            label.grid(row=2, column=0)
 
     button = Button(tickerUIWindow, text="Continue", command=onClick)
     button.grid(row=1, column=0)

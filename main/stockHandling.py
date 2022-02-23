@@ -20,7 +20,7 @@ def collectData(ticker):
 def retrieveData(ticker):
     if not exists(os.path.dirname(__file__) + "\\" + d4 + ticker + ".csv"):
         if not collectData(ticker):
-            return "Stock Not Retrieved"
+            return False
     df = pandas.read_csv(os.path.dirname(__file__) + "\\" + d4 + ticker + ".csv")
     return df
 
