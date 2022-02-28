@@ -11,6 +11,7 @@ d4 = today.strftime("%b-%d-%Y")
 stock = sc.Stock
 path = os.fsencode(os.path.dirname(__file__))
 
+
 def collectData(ticker):
     data = yf.download(tickers=ticker, period="1y", interval="1d", rounding=True, progress=False, show_errors=False)
     if data.empty:
@@ -25,7 +26,7 @@ def clearCache():
         filename = os.fsencode(file)
         if filename.endswith(bytes(".csv", "utf-8")):
             if not filename.startswith(bytes(d4, "utf-8")):
-                os.remove(path+bytes("\\", "utf-8")+file)
+                os.remove(path + bytes("\\", "utf-8") + file)
 
 
 def retrieveData(ticker):
@@ -36,3 +37,8 @@ def retrieveData(ticker):
     df = pandas.read_csv(os.path.dirname(__file__) + "\\" + d4 + ticker + ".csv")
     stock.setDataFrame(stock, df)
     return True
+
+
+if __name__ == "__main__":
+    retrieveData("GOOGL")
+    print(stock.getDataFrame(stock))
