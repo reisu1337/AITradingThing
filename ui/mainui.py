@@ -4,8 +4,8 @@ from PIL import ImageTk, Image
 
 mainui = Tk()
 graph = None
-canvas = None
 stockRetrieved = False
+img = None
 
 
 def tickerUI():
@@ -36,9 +36,12 @@ def loadToolbar(toolbar):
 
 
 def showGraph(ticker):
-    img = ImageTk.PhotoImage(Image.open("googlgraph.png"))
+
+    global img
+
+    img = ImageTk.PhotoImage(Image.open(f"{ticker}graph.png"))
     label = Label(graph, image=img)
-    label.pack()
+    label.pack(expand=True)
 
 
 if __name__ == "__main__":
@@ -51,8 +54,7 @@ if __name__ == "__main__":
     analysis.grid(row=1, column=0, sticky="nswe")
     news = Frame(mainui, bg="RED")
     news.grid(row=2, column=0, sticky="nswe")
-
-    graph = Frame(mainui, bg="yellow")
+    graph = Frame(mainui, bg="YELLOW", width=100, height=100)
     graph.grid(row=1, column=1, sticky="nswe", rowspan=2)
 
     mainui.rowconfigure(0, weight=1)
