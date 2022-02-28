@@ -1,5 +1,6 @@
 from tkinter import *
 from main import stockHandling as sh, graphing as gr
+from PIL import ImageTk, Image
 
 mainui = Tk()
 graph = None
@@ -29,10 +30,18 @@ def tickerUI():
     button.grid(row=1, column=0)
 
 
-def main():
+def loadToolbar(toolbar):
+    addstock = Button(toolbar, text="Add Ticker", command=tickerUI)
+    addstock.grid(column=0, row=0)
 
-    global graph, canvas
 
+def showGraph(ticker):
+    img = ImageTk.PhotoImage(Image.open("googlgraph.png"))
+    label = Label(graph, image=img)
+    label.pack()
+
+
+if __name__ == "__main__":
     mainui.title("Trading App")
     mainui.geometry("960x540")
 
@@ -45,8 +54,6 @@ def main():
 
     graph = Frame(mainui, bg="yellow")
     graph.grid(row=1, column=1, sticky="nswe", rowspan=2)
-    canvas = Canvas(graph, width=300, height=300)
-    canvas.grid(row=0, column=0, sticky="nswe")
 
     mainui.rowconfigure(0, weight=1)
     mainui.rowconfigure(1, weight=10)
@@ -56,16 +63,3 @@ def main():
 
     loadToolbar(toolbar)
     mainui.mainloop()
-
-
-def loadToolbar(toolbar):
-    addstock = Button(toolbar, text="Add Ticker", command=tickerUI)
-    addstock.grid(column=0, row=0)
-
-def showGraph(ticker):
-    img = PhotoImage(file=f"{ticker}graph.png")
-    canvas.create_image(300, 300, anchor=NW, image=img)
-
-
-if __name__ == "__main__":
-    main()
