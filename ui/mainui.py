@@ -39,9 +39,15 @@ def showGraph(ticker):
 
     global img
 
-    img = ImageTk.PhotoImage(Image.open(f"{ticker}graph.png"))
+    for widget in graph.winfo_children():
+        widget.destroy()
+
+    img = ImageTk.PhotoImage(Image.open(f"{ticker}graph.png").resize(size=(530, 519)))
     label = Label(graph, image=img)
-    label.pack(expand=True)
+    label.grid(row=0, column=0, sticky="nswe")
+    graph.grid_columnconfigure(0, weight=1)
+    graph.grid_rowconfigure(0, weight=1)
+
 
 
 if __name__ == "__main__":
@@ -62,6 +68,13 @@ if __name__ == "__main__":
     mainui.rowconfigure(2, weight=10)
     mainui.columnconfigure(0, weight=6)
     mainui.columnconfigure(1, weight=6)
+
+    mainui.update()
+    width = graph.winfo_width()
+    height = graph.winfo_height()
+
+    print(width, height)
+
 
     loadToolbar(toolbar)
     mainui.mainloop()
