@@ -1,7 +1,13 @@
 from matplotlib import pyplot as plt
 from main import stockHandling as sh
+from datetime import datetime
+import os
+from pathlib import Path
 import yfinance as yf
 
+today = datetime.today()
+d4 = today.strftime("%b-%d-%Y")
+path = Path(os.path.dirname(__file__)).parent.absolute()
 
 
 def main(ticker):
@@ -14,7 +20,7 @@ def main(ticker):
     ax.grid()
 
     ax.xaxis.set_major_locator(plt.MaxNLocator(6))
-    plt.savefig(f"{ticker}graph.png")
+    plt.savefig(f"{d4}{ticker}graph.png")
 
 
 if __name__ == "__main__":

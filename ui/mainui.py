@@ -1,11 +1,25 @@
 from tkinter import *
 from main import stockHandling as sh, graphing as gr
 from PIL import ImageTk, Image
+import os
+from datetime import datetime
+
+today = datetime.today()
+d4 = today.strftime("%b-%d-%Y")
+path = os.fsencode(os.path.dirname(__file__))
 
 mainui = Tk()
 graph = None
 stockRetrieved = False
 img = None
+
+
+def clearImgCache():
+    for file in os.listdir(path):
+        filename = os.fsencode(file)
+        if filename.endswith(bytes(".png", "utf-8")):
+            if not filename.startswith(bytes(d4, "utf-8")):
+                os.remove(path + bytes("\\", "utf-8") + file)
 
 
 def tickerUI():
@@ -42,13 +56,16 @@ def showGraph(ticker):
     for widget in graph.winfo_children():
         widget.destroy()
 
-    img = ImageTk.PhotoImage(Image.open(f"{ticker}graph.png"))
+    img = ImageTk.PhotoImage(Image.open(f"{d4+ticker}graph.png"))
     canvas = Canvas(graph, width=640, height=480, bg="black", highlightthickness=0, relief="ridge")
     canvas.pack()
     canvas.create_image(320, 240, image=img)
 
 
 if __name__ == "__main__":
+
+    clearImgCache()
+
     mainui.title("Trading App")
     mainui.resizable(height=False, width=False)
 
