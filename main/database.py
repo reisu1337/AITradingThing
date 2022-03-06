@@ -19,8 +19,7 @@ def connectDataBase():
 def createTables():
     users_sql = """
     CREATE TABLE users (
-    id text PRIMARY KEY,
-    username text NOT NULL,
+    username text PRIMARY KEY,
     password bytes NOT NULL,
     config text )
     """

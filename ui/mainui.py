@@ -1,5 +1,5 @@
 from tkinter import *
-from main import stockHandling as sh, graphing as gr
+from main import stockHandling as sh, graphing as gr, stockClass as sc
 from PIL import ImageTk, Image
 import os
 from datetime import datetime
@@ -69,20 +69,14 @@ if __name__ == "__main__":
     mainui.title("Trading App")
     mainui.resizable(height=False, width=False)
 
-    toolbar = Frame(mainui, bg="BLUE")
+    toolbar = Frame(mainui, highlightbackground="black", highlightthickness=1)
     toolbar.grid(row=0, column=0, sticky="nswe", columnspan=2)
-    analysis = Frame(mainui, bg="GREEN")
+    analysis = Frame(mainui, highlightbackground="black", highlightthickness=1)
     analysis.grid(row=1, column=0, sticky="nswe")
-    news = Frame(mainui, bg="RED", width=400)
+    news = Frame(mainui, width=400, highlightbackground="black", highlightthickness=1)
     news.grid(row=2, column=0, sticky="nswe")
-    graph = Frame(mainui, bg="YELLOW", width=640, height=480)
+    graph = Frame(mainui, width=640, height=480, highlightbackground="black", highlightthickness=1)
     graph.grid(row=1, column=1, sticky="nswe", rowspan=2)
-
-    # mainui.rowconfigure(0, weight=1)
-    # mainui.rowconfigure(1, weight=10)
-    # mainui.rowconfigure(2, weight=10)
-    # mainui.columnconfigure(0, weight=6)
-    # mainui.columnconfigure(1, weight=6)
 
     mainui.update()
     width = graph.winfo_width()

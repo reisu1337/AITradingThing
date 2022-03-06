@@ -46,11 +46,9 @@ def loginUser(username, password):
 
     con, cur = database.connectDataBase()
 
-    checkUserStatement = "SELECT COUNT(*) FROM users WHERE username =?"
     loginStatement = "SELECT password FROM users WHERE username=?"
-    check = (cur.execute(checkUserStatement, (username,))).fetchone()[0]
 
-    if check >= 1:
+    if not checkUsername(username):
         passwordRetrieved = (cur.execute(loginStatement, (username,))).fetchone()[0]
         if bcrypt.checkpw(bytes(password, "utf-8"), passwordRetrieved):
             return "Passwords match"
