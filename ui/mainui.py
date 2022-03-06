@@ -68,19 +68,22 @@ def showNews(ticker):
     for widget in news.winfo_children():
         widget.destroy()
 
+    heading = Label(news, text="News", anchor="n", font="15")
     h1, h2, h3, l1, l2, l3 = ns.getNews(ticker)
 
-    link1 = Message(news, width=400, text=h1, fg="blue", cursor="hand2")
+    heading.grid(column=0, row=0)
+
+    link1 = Message(news, width=400, text=h1, fg="blue", cursor="hand2", anchor="center")
     link1.grid(column=0, row=1)
-    link1.bind("<Button-1>", lambda e: webbrowser.open(h1, new=2))
+    link1.bind("<Button-1>", lambda e: webbrowser.open(l1, new=2))
 
-    link2 = Message(news, width=400, text=h2, fg="blue", cursor="hand2")
+    link2 = Message(news, width=400, text=h2, fg="blue", cursor="hand2", anchor="center")
     link2.grid(column=0, row=2)
-    link2.bind("<Button-1>", lambda e: webbrowser.open(h2, new=2))
+    link2.bind("<Button-1>", lambda e: webbrowser.open(l2, new=2))
 
-    link3 = Message(news, width=400, text=h3, fg="blue", cursor="hand2")
+    link3 = Message(news, width=400, text=h3, fg="blue", cursor="hand2", anchor="center")
     link3.grid(column=0, row=3)
-    link3.bind("<Button-1>", lambda e: webbrowser.open(h3, new=2))
+    link3.bind("<Button-1>", lambda e: webbrowser.open(l3, new=2))
 
 
 if __name__ == "__main__":
@@ -89,7 +92,7 @@ if __name__ == "__main__":
     mainui.title("Trading App")
     mainui.resizable(height=False, width=False)
 
-    toolbar = Frame(mainui, highlightbackground="black", highlightthickness=1)
+    toolbar = Frame(mainui, height=28, highlightbackground="black", highlightthickness=1)
     toolbar.grid(row=0, column=0, sticky="nswe", columnspan=2)
     analysis = Frame(mainui, height=240, width=400, highlightbackground="black", highlightthickness=1)
     analysis.grid(row=1, column=0, sticky="nswe")
@@ -98,11 +101,12 @@ if __name__ == "__main__":
     graph = Frame(mainui, width=640, height=480, highlightbackground="black", highlightthickness=1)
     graph.grid(row=1, column=1, sticky="nswe", rowspan=2)
 
+    loadToolbar(toolbar)
+
     mainui.update()
-    width = news.winfo_width()
-    height = news.winfo_height()
+    width = toolbar.winfo_width()
+    height = toolbar.winfo_height()
 
     print(width, height)
 
-    loadToolbar(toolbar)
     mainui.mainloop()
