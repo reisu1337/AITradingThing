@@ -22,7 +22,6 @@ def getNews(ticker):
     h3 = response.json()["articles"][2]["title"]
 
     l1 = response.json()["articles"][0]["url"]
-    print(l1)
     l2 = response.json()["articles"][1]["url"]
     l3 = response.json()["articles"][2]["url"]
 

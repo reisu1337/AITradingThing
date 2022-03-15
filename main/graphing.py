@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-from main import stockHandling as sh
+from main import stockHandling as sh, analysisSystem as anas
 from datetime import datetime
 import os
 from pathlib import Path
@@ -20,6 +20,8 @@ def main(ticker):
     ax.grid()
 
     ax.xaxis.set_major_locator(plt.MaxNLocator(6))
+    x, y = anas.regLine(ticker)
+    plt.plot(x, y, color="blue", linewidth=3)
     plt.savefig(f"{d4}{ticker}graph.png")
 
 
