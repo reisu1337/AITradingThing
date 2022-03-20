@@ -15,13 +15,14 @@ def main(ticker):
     df = sh.stock.getDataFrame(sh.stock)
     fig, ax = plt.subplots()
     ax.plot(df["Date"], df["Close"])
+    print(df["Date"][0])
     ax.set(xlabel='Time', ylabel='Price ($)',
            title=f"Graph - {ticker.upper()}")
     ax.grid()
 
     ax.xaxis.set_major_locator(plt.MaxNLocator(6))
     x, y = anas.regLine(ticker)
-    plt.plot(x, y, color="blue", linewidth=3)
+    plt.plot(x, y, color="red")
     plt.savefig(f"{d4}{ticker}graph.png")
 
 

@@ -3,7 +3,6 @@ import bcrypt
 from datetime import datetime
 
 
-
 def generateUserID():
     now = datetime.now()
     currentTimeHash = bcrypt.hashpw(bytes(str(now), "utf-8"), bcrypt.gensalt())
@@ -31,19 +30,17 @@ def registerUser(username, password, confPassword):
         else:
             pass
 
-    userID = generateUserID()
     encPassword = bcrypt.hashpw(bytes(password, "utf-8"), bcrypt.gensalt())
 
-    writeStatement = "INSERT INTO users (id, username, password) VALUES (?,?,?)"
+    writeStatement = "INSERT INTO users (username, password) VALUES (?,?)"
 
-    cur.execute(writeStatement, (userID, username, encPassword))
+    cur.execute(writeStatement, (username, encPassword))
     con.commit()
 
-    return "Success"
+    return True  # "Success"
 
 
 def loginUser(username, password):
-
     con, cur = database.connectDataBase()
 
     loginStatement = "SELECT password FROM users WHERE username=?"
@@ -51,11 +48,11 @@ def loginUser(username, password):
     if not checkUsername(username):
         passwordRetrieved = (cur.execute(loginStatement, (username,))).fetchone()[0]
         if bcrypt.checkpw(bytes(password, "utf-8"), passwordRetrieved):
-            return "Passwords match"
+            return True  # "Passwords match"
         else:
-            return "Passwords do not match"
+            return False  # "Passwords do not match"
     else:
-        return "Username does not match"
+        return False  # "Username does not match"
 
 
 if __name__ == "__main__":
