@@ -26,10 +26,8 @@ def regLine(ticker):
     dtDataXTest = []
     for i in dataXTest:
         data = dt.datetime.fromordinal(i[0]).date().strftime("%Y-%m-%d")
-        print(data)
         dtDataXTest.append(data)
 
-    print(dtDataXTest)
     return dtDataXTest, dataYPred
 
 

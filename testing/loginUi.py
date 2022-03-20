@@ -66,14 +66,12 @@ def login():
 def loginParams():
     username = e1.get()
     password = e2.get()
-    print(ls.loginUser(username, password))
 
 
 def registerParams():
     username = rege1.get()
     password = rege2.get()
     confPassword = rege3.get()
-    print(ls.registerUser(username, password, confPassword))
 
 
 if __name__ == "__main__":

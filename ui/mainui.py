@@ -50,8 +50,14 @@ def tickerUI():
 def loadToolbar(toolbarelement):
     addstock = Button(toolbarelement, text="Add Ticker", command=tickerUI)
     loginButton = Button(toolbarelement, text="Login", command=login)
-    addstock.grid(column=0, row=0)
-    loginButton.grid(column=1, row=0)
+    favouriteList = Button(toolbarelement, text="Favorite List")
+    favouriteAdd = Button(toolbarelement, text="Add to Favourites")
+    logOut = Button(toolbarelement, text="Sign Out")
+    loginButton.grid(column=0, row=0)
+    addstock.grid(column=1, row=0)
+    favouriteList.grid(column=2, row=0)
+    favouriteAdd.grid(column=3, row=0)
+    logOut.grid(column=4, row=0)
 
 
 def showGraph(ticker):
@@ -182,7 +188,5 @@ if __name__ == "__main__":
     mainui.update()
     width = toolbar.winfo_width()
     height = toolbar.winfo_height()
-
-    print(width, height)
 
     mainui.mainloop()

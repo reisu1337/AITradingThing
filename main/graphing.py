@@ -15,7 +15,6 @@ def main(ticker):
     df = sh.stock.getDataFrame(sh.stock)
     fig, ax = plt.subplots()
     ax.plot(df["Date"], df["Close"])
-    print(df["Date"][0])
     ax.set(xlabel='Time', ylabel='Price ($)',
            title=f"Graph - {ticker.upper()}")
     ax.grid()
