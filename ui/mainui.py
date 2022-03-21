@@ -1,5 +1,6 @@
 from tkinter import *
-from main import stockHandling as sh, graphing as gr, newsSystem as ns, loginSystem as ls
+from main import stockHandling as sh, graphing as gr, newsSystem as ns, loginSystem as ls, analysisSystem as anas, \
+    favouriteSystem as fs
 from PIL import ImageTk, Image
 import os
 from datetime import datetime
@@ -12,7 +13,10 @@ path = os.fsencode(os.path.dirname(__file__))
 mainui = Tk()
 graph = None
 stockRetrieved = False
+currentStock = ""
 img = None
+favs = ""
+userLoggedIn = None
 
 
 def clearImgCache():
@@ -23,23 +27,33 @@ def clearImgCache():
                 os.remove(path + bytes("\\", "utf-8") + file)
 
 
-def tickerUI():
+def tickerUI(p1="Enter Ticker"):
     tickerUIWindow = Toplevel(mainui)
     tickerUIWindow.title("Enter Ticker")
 
+    insertData = p1
+
     e1 = Entry(tickerUIWindow, width=50, borderwidth=2)
     e1.grid(row=0, column=0)
-    e1.insert(0, "Enter your name")
+    e1.insert(0, insertData)
 
     def onClick():
+
+        global currentStock
+
         ticker = e1.get()
-        if not sh.retrieveData(ticker):
-            label = Label(tickerUIWindow, text="Stock not found")
+        if not 1 <= len(ticker) <= 5:
+            label = Label(tickerUIWindow, text="Invalid Ticker")
+            label.grid(row=2, column=0)
+        elif not sh.retrieveData(ticker):
+            label = Label(tickerUIWindow, text="Stock Not Found")
             label.grid(row=2, column=0)
         else:
+            currentStock = ticker
             tickerUIWindow.destroy()
             gr.main(ticker)
             showGraph(ticker)
+            showAnalysis(ticker)
             showNews(ticker)
             mainui.title(f"Trading App - {ticker.upper()}")
 
@@ -50,14 +64,21 @@ def tickerUI():
 def loadToolbar(toolbarelement):
     addstock = Button(toolbarelement, text="Add Ticker", command=tickerUI)
     loginButton = Button(toolbarelement, text="Login", command=login)
-    favouriteList = Button(toolbarelement, text="Favorite List")
-    favouriteAdd = Button(toolbarelement, text="Add to Favourites")
-    logOut = Button(toolbarelement, text="Sign Out")
+    favouriteList = Button(toolbarelement, text="Favorite List", command=favouriteListUI)
+    favouriteAdd = Button(toolbarelement, text="Add to Favourites", command=addToFav)
+    logOut = Button(toolbarelement, text="Sign Out", command=onSignOut)
+    newsButton = Button(toolbarelement, text="More News", command=moreNewsButton)
     loginButton.grid(column=0, row=0)
     addstock.grid(column=1, row=0)
     favouriteList.grid(column=2, row=0)
     favouriteAdd.grid(column=3, row=0)
-    logOut.grid(column=4, row=0)
+    newsButton.grid(column=4, row=0)
+    logOut.grid(column=5, row=0)
+
+
+def moreNewsButton():
+    link = ns.getMoreNewsLink(currentStock)
+    webbrowser.open(link, new=2)
 
 
 def showGraph(ticker):
@@ -70,6 +91,48 @@ def showGraph(ticker):
     canvas = Canvas(graph, width=640, height=480, bg="black", highlightthickness=0, relief="ridge")
     canvas.pack()
     canvas.create_image(320, 240, image=img)
+
+
+def showAnalysis(ticker):
+    for widget in analysis.winfo_children():
+        widget.destroy()
+
+    heading = Label(analysis, text="Analysis", anchor="n", font="15")
+    heading.grid(column=0, row=0)
+
+    x, y = anas.regLine(ticker)
+    start, end = sh.getAnalysisPrices(ticker)
+
+    currentPrice = f"Current Price - {end}"
+    projectedPrice = f"Projected Price - {round(y[-1][0], 2)}"
+    priceDifference = f"Price Difference - {round(end - start, 2)}"
+    projectedPriceDifference = f"Projected Price Difference - {round((y[-1][0] - y[0][0]), 2)}"
+    text = ""
+
+    if round((y[-1][0] - y[0][0]), 2) > 0:
+        text = "This stock has a positive, upward trend. "
+    else:
+        text = "This stock has a negative, downward trend. "
+
+    if end < round(y[-1][0], 2):
+        text += "Using the data from the past year, we projected that this stock would end up more expensive than it has."
+    else:
+        text += "Using the data from the past year, we projected that this stock would end up less expensive than it has."
+
+    cp = Message(analysis, width=400, text=currentPrice, anchor="center")
+    cp.grid(column=0, row=1)
+
+    pp = Message(analysis, width=400, text=projectedPrice, anchor="center")
+    pp.grid(column=0, row=2)
+
+    pd = Message(analysis, width=400, text=priceDifference, anchor="center")
+    pd.grid(column=0, row=3)
+
+    ppd = Message(analysis, width=400, text=projectedPriceDifference, anchor="center")
+    ppd.grid(column=0, row=4)
+
+    antext = Message(analysis, width=400, text=text, anchor="center")
+    antext.grid(column=0, row=5)
 
 
 def showNews(ticker):
@@ -98,6 +161,7 @@ def register():
     global rege1
     global rege2
     global rege3
+    global registerWindow
 
     registerWindow = Toplevel(loginWindow)
     registerWindow.title("Register")
@@ -156,16 +220,60 @@ def login():
 
 
 def loginParams():
+    global favs, userLoggedIn
+
     username = e1.get()
     password = e2.get()
-    print(ls.loginUser(username, password))
+    result = ls.loginUser(username, password)
+    if isinstance(result, str):
+        loginWindow.destroy()
+        userLoggedIn = result
+        favs = fs.getFavString(username).rstrip(",")
 
 
 def registerParams():
     username = rege1.get()
     password = rege2.get()
     confPassword = rege3.get()
-    print(ls.registerUser(username, password, confPassword))
+    if ls.registerUser(username, password, confPassword):
+        registerWindow.destroy()
+
+
+def onSignOut():
+    global favs, userLoggedIn
+
+    fs.setFavString(userLoggedIn, favs)
+    userLoggedIn = None
+
+
+def favouriteListUI():
+    global favs
+
+    if userLoggedIn is None:
+        return False
+
+    favsUIWindow = Toplevel(mainui)
+    favsUIWindow.title("Favourites")
+
+    favsList = favs.split(",")
+    print(favsList)
+    for i in favsList:
+        if i:
+            Button(favsUIWindow, text=i, command=lambda m=i: favButtonOnClick(m)).pack()
+        else:
+            pass
+
+
+def addToFav():
+    global favs, currentStock
+    print(favs)
+    favs = "," + currentStock + favs
+    print(favs)
+
+
+def favButtonOnClick(m):
+    ticker = m
+    tickerUI(ticker)
 
 
 if __name__ == "__main__":

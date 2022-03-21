@@ -11,7 +11,6 @@ d4 = today.strftime("%b-%d-%Y")
 stock = sc.Stock
 path = os.fsencode(os.path.dirname(__file__))
 
-
 def collectData(ticker):
     data = yf.download(tickers=ticker, period="1y", interval="1d", rounding=True, progress=False, show_errors=False)
     if data.empty:
@@ -38,6 +37,10 @@ def retrieveData(ticker):
     stock.setDataFrame(stock, df)
     return True
 
+def getAnalysisPrices(ticker):
+    df = stock.getDataFrame(stock)
+    price = df["Close"].tolist()
+    return price[0], price[-1]
 
 if __name__ == "__main__":
     retrieveData("GOOGL")

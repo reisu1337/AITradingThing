@@ -23,18 +23,18 @@ def checkUsername(username):
 def registerUser(username, password, confPassword):
     con, cur = database.connectDataBase()
     if not checkUsername(username):
-        return "Username already exists in database"
+        return False  # "Username already exists in database"
     else:
         if password != confPassword:
-            return "Passwords do not match"
+            return False  # "Passwords do not match"
         else:
             pass
 
     encPassword = bcrypt.hashpw(bytes(password, "utf-8"), bcrypt.gensalt())
 
-    writeStatement = "INSERT INTO users (username, password) VALUES (?,?)"
+    writeStatement = "INSERT INTO users (username, password, config) VALUES (?,?, ?)"
 
-    cur.execute(writeStatement, (username, encPassword))
+    cur.execute(writeStatement, (username, encPassword, ""))
     con.commit()
 
     return True  # "Success"
@@ -48,7 +48,7 @@ def loginUser(username, password):
     if not checkUsername(username):
         passwordRetrieved = (cur.execute(loginStatement, (username,))).fetchone()[0]
         if bcrypt.checkpw(bytes(password, "utf-8"), passwordRetrieved):
-            return True  # "Passwords match"
+            return username
         else:
             return False  # "Passwords do not match"
     else:

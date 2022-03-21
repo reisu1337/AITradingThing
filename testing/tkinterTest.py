@@ -6,7 +6,7 @@ root = Tk()
 def main():
     e = Entry(root, width=50, borderwidth=5)
     e.grid(row=0, column=0)
-    e.insert(0, "Enter your name")
+    e.insert(0, "googl")
 
     def myClick():
         label = Label(root, text=e.get())

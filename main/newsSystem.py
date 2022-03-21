@@ -27,5 +27,12 @@ def getNews(ticker):
 
     return h1, h2, h3, l1, l2, l3
 
+
+def getMoreNewsLink(ticker):
+    companyName = yf.Ticker(ticker).info["longName"]
+    url = f"https://news.google.com/search?q={companyName}"
+    return url
+
+
 if __name__ == "__main__":
     getNews("aapl")
