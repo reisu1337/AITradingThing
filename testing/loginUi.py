@@ -1,5 +1,4 @@
 from tkinter import *
-from main import loginSystem as ls
 
 loginWindow = Tk()
 
@@ -42,7 +41,7 @@ def login():
     loginWindow.geometry("350x200")
     loginWindow.title("Login")
 
-    l1 = Label(loginWindow, text="Oliver's Trading Thing", font=(30))
+    l1 = Label(loginWindow, text="Oliver's Trading Thing", font=30)
     l2 = Label(loginWindow, text="Username:")
     e1 = Entry(loginWindow, width=30, borderwidth=1)
     l3 = Label(loginWindow, text="Password:")
@@ -64,14 +63,11 @@ def login():
 
 
 def loginParams():
-    username = e1.get()
-    password = e2.get()
+    pass
 
 
 def registerParams():
-    username = rege1.get()
-    password = rege2.get()
-    confPassword = rege3.get()
+    pass
 
 
 if __name__ == "__main__":

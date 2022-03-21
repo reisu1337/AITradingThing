@@ -33,15 +33,15 @@ def tickerUI(p1="Enter Ticker"):
 
     insertData = p1
 
-    e1 = Entry(tickerUIWindow, width=50, borderwidth=2)
-    e1.grid(row=0, column=0)
-    e1.insert(0, insertData)
+    entry1 = Entry(tickerUIWindow, width=50, borderwidth=2)
+    entry1.grid(row=0, column=0)
+    entry1.insert(0, insertData)
 
     def onClick():
 
         global currentStock
 
-        ticker = e1.get()
+        ticker = entry1.get()
         if not 1 <= len(ticker) <= 5:
             label = Label(tickerUIWindow, text="Invalid Ticker")
             label.grid(row=2, column=0)
@@ -101,13 +101,12 @@ def showAnalysis(ticker):
     heading.grid(column=0, row=0)
 
     x, y = anas.regLine(ticker)
-    start, end = sh.getAnalysisPrices(ticker)
+    start, end = sh.getAnalysisPrices()
 
     currentPrice = f"Current Price - {end}"
     projectedPrice = f"Projected Price - {round(y[-1][0], 2)}"
     priceDifference = f"Price Difference - {round(end - start, 2)}"
     projectedPriceDifference = f"Projected Price Difference - {round((y[-1][0] - y[0][0]), 2)}"
-    text = ""
 
     if round((y[-1][0] - y[0][0]), 2) > 0:
         text = "This stock has a positive, upward trend. "
@@ -115,9 +114,11 @@ def showAnalysis(ticker):
         text = "This stock has a negative, downward trend. "
 
     if end < round(y[-1][0], 2):
-        text += "Using the data from the past year, we projected that this stock would end up more expensive than it has."
+        text += "Using the data from the past year, we projected that this stock would end up more expensive than it " \
+                "has. "
     else:
-        text += "Using the data from the past year, we projected that this stock would end up less expensive than it has."
+        text += "Using the data from the past year, we projected that this stock would end up less expensive than it " \
+                "has. "
 
     cp = Message(analysis, width=400, text=currentPrice, anchor="center")
     cp.grid(column=0, row=1)
@@ -198,7 +199,7 @@ def login():
     loginWindow.geometry("350x200")
     loginWindow.title("Login")
 
-    l1 = Label(loginWindow, text="Oliver's Trading Thing", font=(30))
+    l1 = Label(loginWindow, text="Oliver's Trading Thing", font=30)
     l2 = Label(loginWindow, text="Username:")
     e1 = Entry(loginWindow, width=30, borderwidth=1)
     l3 = Label(loginWindow, text="Password:")
@@ -247,7 +248,7 @@ def onSignOut():
 
 
 def favouriteListUI():
-    global favs
+    global favs, favsUIWindow
 
     if userLoggedIn is None:
         return False
@@ -272,6 +273,7 @@ def addToFav():
 
 
 def favButtonOnClick(m):
+    favsUIWindow.destroy()
     ticker = m
     tickerUI(ticker)
 

@@ -10,10 +10,10 @@ def main():
 
     def myClick():
         label = Label(root, text=e.get())
-        label.grid(row=2, column =0)
+        label.grid(row=2, column=0)
 
     button = Button(root, text="Click the button!", command=myClick)
-    button.grid(row = 1, column=0)
+    button.grid(row=1, column=0)
 
     root.mainloop()
 

@@ -39,6 +39,7 @@ def verifyTables(verifycursor):
         return True
     # If a TypeError is returned that means the table does not exist, otherwise it does and True is returned
 
+
 if __name__ == "__main__":
     con, cur = connectDataBase()
     createTables()

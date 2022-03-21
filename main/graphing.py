@@ -1,9 +1,10 @@
-from matplotlib import pyplot as plt
-from main import stockHandling as sh, analysisSystem as anas
-from datetime import datetime
 import os
+from datetime import datetime
 from pathlib import Path
-import yfinance as yf
+
+from matplotlib import pyplot as plt
+
+from main import stockHandling as sh, analysisSystem as anas
 
 today = datetime.today()
 d4 = today.strftime("%b-%d-%Y")

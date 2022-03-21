@@ -1,7 +1,7 @@
-import requests
 import datetime
+
+import requests
 import yfinance as yf
-import json
 
 monthAgo = datetime.datetime.now() - datetime.timedelta(days=29)
 

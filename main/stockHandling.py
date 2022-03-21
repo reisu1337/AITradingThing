@@ -11,12 +11,15 @@ d4 = today.strftime("%b-%d-%Y")
 stock = sc.Stock
 path = os.fsencode(os.path.dirname(__file__))
 
+
+# noinspection PyShadowingNames
 def collectData(ticker):
     data = yf.download(tickers=ticker, period="1y", interval="1d", rounding=True, progress=False, show_errors=False)
     if data.empty:
         return False
-    path = os.path.join(os.path.dirname(__file__), f"{d4 + ticker}.csv")
-    pandas.DataFrame.to_csv(data, path)
+    # noinspection PyShadowingNames
+    pathToCSV = os.path.join(os.path.dirname(__file__), f"{d4 + ticker}.csv")
+    pandas.DataFrame.to_csv(data, pathToCSV)
     return True
 
 
@@ -37,10 +40,12 @@ def retrieveData(ticker):
     stock.setDataFrame(stock, df)
     return True
 
-def getAnalysisPrices(ticker):
+
+def getAnalysisPrices():
     df = stock.getDataFrame(stock)
     price = df["Close"].tolist()
     return price[0], price[-1]
+
 
 if __name__ == "__main__":
     retrieveData("GOOGL")
